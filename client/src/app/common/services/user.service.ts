@@ -7,47 +7,20 @@ import { CookieService } from 'ngx-cookie-service'
 })
 export class UserService {
   user:any = {};
-  showLoader: boolean = true;
-  cartMaterials: any = [];
-  orderResponse: any = {};
-  compareMaterials: any = [];
-  cartProductCount: any;
-
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.compareMaterials = (typeof localStorage.getItem('compareItems') != 'object') ? JSON.parse(localStorage.getItem('compareItems')) : []
    }
 
-  //  getMe(): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     if (Object.keys(this.user).length != 0) {
-  //       resolve({ body: { user: this.user } })
-  //       this.http.get('/users/me', {}).subscribe((res: any) => {
-  //         Object.assign(this.user, res.body.user)
-  //         this.cartMaterials =JSON.parse(localStorage.getItem('cart_item'))
-  //       }, (error: any) => {
-  //         reject(error);
-  //       });
-  //     } else {
-  //       this.http.get('/users/me', {}).subscribe((res: any) => {
-  //         Object.assign(this.user, res.body.user)
-  //         this.cartMaterials =JSON.parse(localStorage.getItem('cart_item'))
-  //         resolve(res);
-  //       }, (error: any) => {
-  //         reject(error.error);
-  //       });
-  //     }
-  //   });
-  // }
-
-  getMe(){
-    return this.http.get(`me`,{
-      withCredentials: true
-    })
-  }
+   getUser(){
+     return this.http.get(`me`,{
+       withCredentials: true
+     })
+   }
 
   signUp(userCredentials:any){
-    return this.http.post(`signup`,userCredentials)
+    return this.http.post(`signup`,userCredentials,{
+      withCredentials: true
+    })
   }
 
   login(userCredentials:any){
@@ -62,16 +35,24 @@ export class UserService {
     })
   }
 
-  addFriend(friendId:any){
+  addFriend(friendId:any,userId:any){
     return this.http.post(`friends/${friendId}`,{
-      withCredentials: true
+      userId: userId,
+      withCredentials: true,
     })
+  }
 
+  getFriends(){
+   return this.http.get(`friends`,{
+     withCredentials: true
+   })
   }
   
   logout(){
-    this.user = {};
-    this.cookieService.delete('token');
+    localStorage.removeItem('user')
+    return this.http.get(`logout`,{
+      withCredentials: true
+    })
   }
 }
 

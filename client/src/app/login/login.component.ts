@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.userService.login(this.signIn.value).subscribe((res: any) => {
-      console.log(res)
+      localStorage.setItem('user',JSON.stringify(res.user))
       this.router.navigate(['profile'])
     }, (error) => {
       this.responseMessage = error.error.message

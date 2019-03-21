@@ -7,6 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './common/http-interceptor/http.interceptor'
+import { AuthGuard } from './common/services/auth-guard.service'
+import { UserResolver } from './common/resolves/user.resolve'
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +19,7 @@ import { SignupComponent } from './signup/signup.component';
 import { FriendsComponent } from './friends/friends.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { HeaderComponent } from './common/components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     SignupComponent,
     FriendsComponent,
     ProfileComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +46,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
       multi: true
     },
     CookieService,
+    AuthGuard,
+    UserResolver
   ],
   bootstrap: [AppComponent]
 })

@@ -24,7 +24,8 @@ export class SignupComponent implements OnInit {
 
   signUp() {
     this.userService.signUp(this.signUpForm.value).subscribe((res: any) => {
-      this.router.navigate(['profile'])
+      localStorage.setItem('user',JSON.stringify(res.user))
+      this.router.navigate(['/profile'])
     }, (error) => {
       this.responseMessage = error.error.message
       setTimeout(()=>{
