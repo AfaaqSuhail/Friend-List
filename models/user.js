@@ -10,7 +10,6 @@ var userSchema = mongoose.Schema({
     friends:[{type: mongoose.Schema.Types.ObjectId, ref: 'User', default:[]}]
 });
 userSchema.post('save',function(){
-    console.log('in save',this);
     eventEmitter.emit('UserEvent',this);
 });
 userSchema.methods.generateHash = function (password) {

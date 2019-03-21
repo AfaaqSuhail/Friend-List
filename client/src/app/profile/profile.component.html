@@ -3,7 +3,7 @@
   <div class="page-header text-center mt-5">
     <h1><span class="fa fa-anchor pr-2"></span>Welcome {{currentUser.name}}</h1>
   </div>
-
+  <p *ngIf="message">{{message}}</p>
   <div class="row pt-4">
     <div *ngFor="let user of users" class="col-sm-6 col-md-6 col-lg-6">
       <div class="pt-5">
@@ -11,7 +11,7 @@
         <p>
           <strong>email</strong>: {{user.email}}<br>
         </p>
-        <p *ngIf="message">{{message}}</p>
+       
         <button *ngIf="!user.hideButton" (click)="addFriend(user._id)" class="btn btn-primary">Add Friend</button>
       </div>
     </div>

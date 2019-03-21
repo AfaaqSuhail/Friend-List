@@ -29,8 +29,6 @@ export class ProfileComponent implements OnInit {
     this.userService.getProfile().subscribe((res: any) => {
       if (res.users.length) {
         this.users = res.users;
-        console.log("profile", this.users)
-        console.log("currentUser", this.currentUser)
         this.isFriend();
       }
       else {
