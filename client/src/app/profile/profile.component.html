@@ -11,7 +11,8 @@
         <p>
           <strong>email</strong>: {{user.email}}<br>
         </p>
-        <button *ngIf="user.showbutton == 'true'" (click)="addFriend(user._id)" class="btn btn-primary">Add Friend</button>
+        <p *ngIf="message">{{message}}</p>
+        <button *ngIf="!user.hideButton" (click)="addFriend(user._id)" class="btn btn-primary">Add Friend</button>
       </div>
     </div>
   </div>

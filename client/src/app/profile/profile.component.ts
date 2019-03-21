@@ -11,54 +11,48 @@ import { currentId } from 'async_hooks';
 })
 export class ProfileComponent implements OnInit {
 
-  users:any;
-  currentUser:any;
-  friends:any;
-  friendIds:any = [];
+  users: any;
+  currentUser: any;
+  friends: any;
+  friendIds: any = [];
+  message: any;
   constructor(private userService: UserService,
     private router: Router, ) { }
 
-  ngOnInit() {  
+  ngOnInit() {
+    this.message = '';
     this.currentUser = JSON.parse(localStorage.getItem('user'))
     this.getProfile();
   }
 
-  getProfile(){
-    this.userService.getProfile().subscribe((res:any)=>{
-      if(res.users.length){
+  getProfile() {
+    this.userService.getProfile().subscribe((res: any) => {
+      if (res.users.length) {
         this.users = res.users;
-        console.log("profile",this.users)
-        console.log("currentUser",this.currentUser)
-        this.isFriend();       
+        console.log("profile", this.users)
+        console.log("currentUser", this.currentUser)
+        this.isFriend();
+      }
+      else {
+        this.message = 'There are no users except you.'
       }
     })
   }
 
-  addFriend(friendId:any){
-    this.userService.addFriend(friendId,this.currentUser._id).subscribe((res:any)=>{
+  addFriend(friendId: any) {
+    this.userService.addFriend(friendId, this.currentUser._id).subscribe((res: any) => {
       this.router.navigate(['friends'])
     })
   }
 
-  isFriend(){
-    if(this.currentUser.friends.length){
-      this.currentUser.friends.forEach((friendId:any)=>{
-        console.log(friendId)
-        this.users.forEach((user:any)=>{
-          if(user._id==friendId){
-            user.showbutton = 'false'
-          }
-          else{
-            user.showbutton = 'true'
-          }
-        })
-      })
-      console.log(this.users)
-    }
-    else{
-      this.users.forEach((user:any)=>{
-          user.showbutton = 'true'
-      })
-    }
+  isFriend() {
+    this.users.forEach((element) => {
+      this.currentUser.friends.forEach((elem) => {
+        if (elem == element._id) {
+          element.hideButton = true;
+        }
+      });
+    });
   }
+
 }
