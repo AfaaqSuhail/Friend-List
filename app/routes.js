@@ -2,105 +2,146 @@ var User = require('../models/user');
 var jwt = require('jsonwebtoken');
 module.exports = function (app, passport, eventEmitter) {
 
-    app.post('/create-user', async (req,res) => { 
-        let user = await User.create(req.body).catch((err) => {
-            res.status(400).send({
-              error:"Email already exist"
-            })
+    app.post('/signup', (req,res,next) => {
+        passport.authenticate('local-signup', function(err, user, info) {
+          if (err) { return res.status(501).json(err); }
+          if (!user) { return res.status(400).send({
+              status: 400,
+              message: info.message
+          }); }
+          req.logIn(user, function(err) {
+            if (err) { return res.status(501).json(err); }
+            return res.status(200).send({
+                status: 200,
+                user: user,
+            });
           });
-          return res.json({
-            body: {
-              user: user
-            }
-          })
-    })
+        })(req, res, next);
+      });
 
 
-    app.get('/profile', isLoggedIn, function (req, res) {
-        User.find({ _id: { $ne: req.user._id } }).then(function (users) {
-            res.render('profile.ejs', {
-                user: req.user,
-                users: users
+      app.post('/login',(req,res,next) => {
+        passport.authenticate('local', function(err, user, info) {
+          if (err) { return res.status(501).json(err); }
+          if (!user) { return res.status(400).send({
+              status: 400,
+              message: info.message
+          }); }
+          req.logIn(user, function(err) {
+            if (err) { return res.status(501).json(err); }
+            return res.status(200).send({
+                status: 200,
+                user: user,
             });
-        });
+          });
+        })(req, res, next);
+      });
+
+      app.get('/me',isLoggedIn, async (req,res,next) => {
+          return res.status(200).json(req.user)(req, res, next);
+      })
+
+
+    app.get('/profile', isLoggedIn,function (req, res, next){
+        User.find({ _id: { $ne: req.user._id } }).then((users)=>{
+            res.status(200).send({
+                staus: 200,
+                users: users
+            })
+        })
+    })
+
+    app.post('/friends/:friendId',(req, res, next) =>{
+        User.update({ _id: req.user._id }, { $addToSet: { friends: req.params.friendId } }, { multi: false }) 
+        res.status(200).send({
+            status: 200,
+            message: "Ok kro"
+        })
     });
-
-    // app.post('/login', (req,res) => {
-    //     res.send({
-    //         user: req.email
-    //     })
-    // })
-
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/user',
-        failureRedirect: '/login',
-        failureFlash: true
-    }));
-
-    app.get('/user', (req,res) => {
-        console.log("Reqqqqqqqqqqqqqqqqqqqqqqqqqqqqques",req)
-       res.send({
-           status: 200,
-           user: req.user
-       })
-    })
-
-    app.get('/signup-user', (req,res) => {   
-        console.log(req.user) 
-    //    res.send({
-    //        status: 200,
-    //        user: req.user
-    //    })
-    })
     
-    app.get('/login', function (req, res) {
-        res.status(400).send({
-            status: 400,
-            message: "Invalid username or password"
-        })
-    });
 
 
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/signup-user',
-        failureRedirect: '/signup',
-        failureFlash: true
-    }));
+    // app.get('/friends', isLoggedIn, function (req, res) {
+    //     User.find({ _id: { $in: req.user.friends } }).then(function (users) {
+    //         // res.render('friends.ejs', {
+    //         //     user: req.user,
+    //         //     users: users
+    //         // });
+    //     })(req, res, next);
+    // });
 
-    app.get('/signup', (req,res) =>{
-      
-        res.status(400).send({
-            status: 400,
-            message: "Email already exist"
-        })
-     })
+    
+        app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
 
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
-
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {
-            successRedirect: '/profile',
-            failureRedirect: '/'
-        }));
-
-
-    app.get('/friends', isLoggedIn, function (req, res) {
-        User.find({ _id: { $in: req.user.friends } }).then(function (users) {
-            res.render('friends.ejs', {
-                user: req.user,
-                users: users
-            });
-        });
-    });
-
-
-    app.post('/friends', isLoggedIn, function (req, res) {
-        User.update({ _id: req.user._id }, { $addToSet: { friends: req.body.friendId } }, { multi: false }).then(function () {
-            res.redirect('/friends');
-        });
-    });
-
-    app.get('/user/:id', function (req, res) {
+        app.get('/auth/facebook/callback',
+            passport.authenticate('facebook', {
+                successRedirect: '/profile',
+                failureRedirect: '/'
+            }));
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        app.get('/user/:id', function (req, res) {
         User.findOne({ _id: req.params.id }, function (err, user) {
             if (err || !user) {
                 res.json({ message: 'user not found' })
@@ -116,8 +157,10 @@ module.exports = function (app, passport, eventEmitter) {
 };
 
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
+     if (req.isAuthenticated())
         return next();
-
-    res.redirect('/');
+    res.status(400).send({
+        status: 400,
+        message: 'Unauthorized request'
+    });
 }

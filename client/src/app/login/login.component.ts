@@ -25,7 +25,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.userService.login(this.signIn.value).subscribe((res: any) => {
-      console.log("Login Response", res)
+      console.log(res)
+      this.router.navigate(['profile'])
     }, (error) => {
       this.responseMessage = error.error.message
       setTimeout(()=>{

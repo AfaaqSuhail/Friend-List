@@ -4,10 +4,10 @@ var bcrypt = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
     email: {type: String, lowercase: true},
     password: {type: String},
-    name: {type: String},
+    name: {type: String},   
     id: {type: String},
-    // token: {type: String},
-    // friends:[{type: mongoose.Schema.Types.ObjectId, ref: 'User', default:[]}]
+    token: {type: String},
+    friends:[{type: mongoose.Schema.Types.ObjectId, ref: 'User', default:[]}]
 });
 userSchema.post('save',function(){
     console.log('in save',this);

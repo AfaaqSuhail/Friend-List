@@ -40,15 +40,34 @@ export class UserService {
   //   });
   // }
 
+  getMe(){
+    return this.http.get(`me`,{
+      withCredentials: true
+    })
+  }
 
-signUp(userCredentials:any){
+  signUp(userCredentials:any){
     return this.http.post(`signup`,userCredentials)
   }
 
   login(userCredentials:any){
-    return this.http.post(`login`,userCredentials)
+    return this.http.post(`login`,userCredentials, {
+      withCredentials: true
+    })
+  }
+  
+  getProfile(){
+    return this.http.get(`profile`,{
+      withCredentials: true
+    })
   }
 
+  addFriend(friendId:any){
+    return this.http.post(`friends/${friendId}`,{
+      withCredentials: true
+    })
+
+  }
   
   logout(){
     this.user = {};

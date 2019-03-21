@@ -1,38 +1,35 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-      <div class="navbar-header">
-          <a class="navbar-brand" href="/profile">My Friend List</a>
-      </div>
-      <ul class="nav navbar-nav">
-          <li class="active"><a href="/profile">Users</a></li>
-          <li><a href="/friends">Friends</a></li>
+<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">My Friend List</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="friends">Friends</a>
+        </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-          <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-      </ul>
-  </div>
-</nav>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" (click)="logout()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+    </ul>
+    
+    </div>
+  </nav>
 <div class="container">
 
-  <!-- <div class="page-header text-center">
-      <h1><span class="fa fa-anchor"></span> Welcome <%= user.name %> </h1>
+  <div class="page-header text-center mt-5">
+      <h1><span class="fa fa-anchor pr-2"></span>Welcome Dummy</h1>
   </div>
 
-  <div class="row">
-      <% for(var i=0; i<users.length; i++) { %>
-      <div class="col-sm-6 col-md-6 col-lg-6">
+  <div class="row pt-4">
+      <div *ngFor="let user of users" class="col-sm-6 col-md-6 col-lg-6">
           <div class="well">
-              <h3><span class="fa fa-user"></span> <%=users[i].name%> </h3>
+              <h3><span class="fa fa-user pr-3"></span>{{user.name}} </h3>
               <p>
-                  <strong>email</strong>: <%=users[i].email%><br>
+                  <strong>email</strong>: {{user.email}}<br>
               </p>
-              <form action="/friends" method="post">
-                  <input type="hidden" name="friendId" value="<%=users[i]._id%>">
-                  <button type="submit" class="btn btn-default">Add Friend</button>
-              </form>
+                  <button (click)="addFriend(user._id)" class="btn btn-primary">Add Friend</button>
           </div>
       </div>
-        <%}%>
-  </div> -->
-
+  </div>
 </div>
