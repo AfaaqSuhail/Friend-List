@@ -1,5 +1,4 @@
 # Friend List Application
-## Live Demo: http://my-friend-list.herokuapp.com
 
 ### Installation
 ##### clone and go to main directory
@@ -21,6 +20,5 @@
 #####  b)	User can add other users as Friend.
 #####   c)	Show list of all friends
 ##### Create API that will return user detail via JWT(JSON web tokens) /user/userId
-##### Sample APi: http://my-friend-list.herokuapp.com/user/userId
 
 
